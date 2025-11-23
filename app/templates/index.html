@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Amazon Review Sentiment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 2rem; }
+    .card { max-width: 680px; padding: 1.5rem; border: 1px solid #e5e7eb; border-radius: 12px; }
+    textarea { width: 100%; height: 140px; padding: .75rem; font-size: 1rem; }
+    button { margin-top: .75rem; padding: .6rem 1rem; border-radius: 10px; cursor:pointer; }
+    .result { margin-top: 1rem; padding: .75rem; background:#f9fafb; border-radius: 10px; }
+    small { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Amazon Review Sentiment</h1>
+    <form method="POST" action="/predict">
+      <label for="review_text"><strong>Enter a review:</strong></label>
+      <textarea id="review_text" name="review_text" placeholder="Type or paste a product review..."></textarea>
+      <button type="submit">Analyze sentiment</button>
+    </form>
+
+    {% if result %}
+      <div class="result">
+        {% if result.error %}
+          <p>{{ result.error }}</p>
+        {% else %}
+          <p><strong>{{ result.label }}</strong> <small>(confidence: {{ result.confidence }})</small></p>
+          {% if original %}<p><small>Input:</small> {{ original }}</p>{% endif %}
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

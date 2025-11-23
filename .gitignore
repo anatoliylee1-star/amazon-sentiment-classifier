@@ -1,0 +1,7 @@
+__pucache__/
+.venv/
+*.pt
+*.bin
+data/raw/
+data/processed/
+models/
