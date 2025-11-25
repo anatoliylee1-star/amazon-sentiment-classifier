@@ -1,0 +1,21 @@
+Small dataset detected -> using 75/25 train/test (stratified) and copying test -> val
+Traceback (most recent call last):
+  File "C:\Users\user\amazon-sentiment-classifier\src\prepare_amazon_csv.py", line 64, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\user\amazon-sentiment-classifier\src\prepare_amazon_csv.py", line 50, in main
+    train_df, test_df = train_test_split(df, test_size=0.25, stratify=df["label"], random_state=42)
+                        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\amazon-sentiment-classifier\.venv\Lib\site-packages\sklearn\utils\_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\user\amazon-sentiment-classifier\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 2940, in train_test_split
+    train, test = next(cv.split(X=arrays[0], y=stratify))
+                  ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\amazon-sentiment-classifier\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 1927, in split
+    for train, test in self._iter_indices(X, y, groups):
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\user\amazon-sentiment-classifier\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 2342, in _iter_indices
+    raise ValueError(
+    ...<4 lines>...
+    )
+ValueError: The least populated class in y has only 1 member, which is too few. The minimum number of groups for any class cannot be less than 2.
