@@ -1,3 +1,9 @@
 pandas>=2.0
 scikit-learn>=1.4
 tqdm>=4.66
+flask>=3.0
+transformers>=4.44
+torch>=2.3
+tokenizers>=0.15
+numpy>=1.26
+gunicorn>=21.2

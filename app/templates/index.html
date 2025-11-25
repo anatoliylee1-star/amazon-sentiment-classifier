@@ -5,33 +5,58 @@
   <title>Amazon Review Sentiment</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 2rem; }
-    .card { max-width: 680px; padding: 1.5rem; border: 1px solid #e5e7eb; border-radius: 12px; }
-    textarea { width: 100%; height: 140px; padding: .75rem; font-size: 1rem; }
-    button { margin-top: .75rem; padding: .6rem 1rem; border-radius: 10px; cursor:pointer; }
-    .result { margin-top: 1rem; padding: .75rem; background:#f9fafb; border-radius: 10px; }
-    small { color: #6b7280; }
+    body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial; margin: 2rem; display:flex; justify-content:center; }
+    .card { width: 100%; max-width: 720px; padding: 1.5rem; border: 1px solid #e5e7eb; border-radius: 14px; box-shadow: 0 2px 10px rgba(0,0,0,.04);}
+    textarea { width: 100%; height: 140px; padding: .9rem; font-size: 1rem; border-radius: 10px; border:1px solid #e5e7eb;}
+    button { margin-top: .9rem; padding: .7rem 1.1rem; border-radius: 10px; border: 1px solid #e5e7eb; background:#111; color:#fff; cursor:pointer;}
+    .result { margin-top: 1rem; padding: .9rem; background:#f8fafc; border-radius: 10px; border:1px solid #e5e7eb;}
+    .muted { color:#6b7280; font-size:.9rem }
+    .error { color: #b91c1c; }
+    .spinner { display:none; margin-top: .75rem; }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Amazon Review Sentiment</h1>
-    <form method="POST" action="/predict">
-      <label for="review_text"><strong>Enter a review:</strong></label>
-      <textarea id="review_text" name="review_text" placeholder="Type or paste a product review..."></textarea>
-      <button type="submit">Analyze sentiment</button>
-    </form>
+    <p class="muted">Type a review and get an instant prediction.</p>
 
-    {% if result %}
-      <div class="result">
-        {% if result.error %}
-          <p>{{ result.error }}</p>
-        {% else %}
-          <p><strong>{{ result.label }}</strong> <small>(confidence: {{ result.confidence }})</small></p>
-          {% if original %}<p><small>Input:</small> {{ original }}</p>{% endif %}
-        {% endif %}
-      </div>
-    {% endif %}
+    <label for="review"><strong>Review</strong></label>
+    <textarea id="review" placeholder="Type or paste a product review..."></textarea>
+    <button id="analyze">Analyze sentiment</button>
+    <div id="spin" class="spinner muted">Analyzing…</div>
+
+    <div id="out" class="result" style="display:none"></div>
+    <div id="err" class="muted error" style="display:none"></div>
   </div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+$("analyze").addEventListener("click", async () => {
+  const text = $("review").value.trim();
+  $("err").style.display = "none";
+  $("out").style.display = "none";
+  if (!text) { $("err").textContent = "Please enter a review."; $("err").style.display = "block"; return; }
+
+  $("spin").style.display = "block";
+  try {
+    const res = await fetch("/api/predict", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ text })
+    });
+    const data = await res.json();
+    $("spin").style.display = "none";
+
+    if (!res.ok) { $("err").textContent = data.error || "Something went wrong."; $("err").style.display = "block"; return; }
+
+    $("out").innerHTML = `<strong>${data.label}</strong> <span class="muted">(confidence: ${data.confidence})</span>`;
+    $("out").style.display = "block";
+  } catch(e) {
+    $("spin").style.display = "none";
+    $("err").textContent = "Network error.";
+    $("err").style.display = "block";
+  }
+});
+</script>
 </body>
 </html>

@@ -1,7 +1,10 @@
-# src/inference.py
-from typing import Optional, Dict
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import os
+from typing import Dict, Optional
 import torch
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+class _ModelSingleton:
+    svc = None
 
 class SentimentService:
     """
