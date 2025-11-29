@@ -10,3 +10,6 @@ python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
+## Necessary files for apllication run (Processed Data & DistilBERT model)
+https://drive.google.com/drive/folders/1GQTAxFvcXibT4nc0F0yQ0UgGU7Yat2pk?usp=sharing
+https://drive.google.com/drive/folders/1Oz8VH3LrPAWSQJ5GzLCrxtZ5REswheMk?usp=sharing
