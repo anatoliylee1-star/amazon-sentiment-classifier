@@ -7,6 +7,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, get_
 from torch.optim import AdamW
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from tqdm import tqdm
+from preprocess import clean_text
 
 DATA_DIR = Path("data/processed")
 MODEL_DIR = Path("models/distilbert_best")
@@ -55,6 +56,11 @@ def main():
     val_df   = pd.read_csv(DATA_DIR / "val.csv")
     test_df  = pd.read_csv(DATA_DIR / "test.csv")
     print("Counts:", len(train_df), len(val_df), len(test_df))
+    
+    print("🧹 Cleaning text...")
+    train_df["text"] = train_df["text"].apply(clean_text)
+    val_df["text"]   = val_df["text"].apply(clean_text)
+    test_df["text"]  = test_df["text"].apply(clean_text)
 
     print("🧠 Loading tokenizer/model:", PRETRAINED)
     tok = AutoTokenizer.from_pretrained(PRETRAINED)
